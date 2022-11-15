@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+		<link rel="pingback" href="https://blog.michael.franzl.name/xmlrpc.php">
+		<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v18.0 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>phantom.py: A lean replacement for bulky headless browser frameworks - Michael Franzl</title>
+	<link rel="canonical" href="https://blog.michael.franzl.name/2017/10/16/phantom-py/" />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="phantom.py: A lean replacement for bulky headless browser frameworks - Michael Franzl" />
+	<meta property="og:description" content="This is a simple but fully scriptable headless QtWebKit browser using PyQt5 in Python3, specialized in executing external JavaScript and generating PDF files. A lean replacement for other bulky headless browser frameworks. (Source code at end of this post as well as in this github gist) Usage If you have a display attached: If you &hellip; Continue reading &quot;phantom.py: A lean replacement for bulky headless browser frameworks&quot;" />
+	<meta property="og:url" content="https://blog.michael.franzl.name/2017/10/16/phantom-py/" />
+	<meta property="og:site_name" content="Michael Franzl" />
+	<meta property="article:published_time" content="2017-10-16T09:50:21+00:00" />
+	<meta property="article:modified_time" content="2021-02-07T09:44:20+00:00" />
+	<meta name="twitter:label1" content="Written by" />
+	<meta name="twitter:data1" content="Michael Franzl" />
+	<meta name="twitter:label2" content="Est. reading time" />
+	<meta name="twitter:data2" content="4 minutes" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://blog.michael.franzl.name/#website","url":"https://blog.michael.franzl.name/","name":"Michael Franzl","description":"Adventures with Technology","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://blog.michael.franzl.name/?s={search_term_string}"},"query-input":"required name=search_term_string"}],"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://blog.michael.franzl.name/2017/10/16/phantom-py/#webpage","url":"https://blog.michael.franzl.name/2017/10/16/phantom-py/","name":"phantom.py: A lean replacement for bulky headless browser frameworks - Michael Franzl","isPartOf":{"@id":"https://blog.michael.franzl.name/#website"},"datePublished":"2017-10-16T09:50:21+00:00","dateModified":"2021-02-07T09:44:20+00:00","author":{"@id":"https://blog.michael.franzl.name/#/schema/person/c9c6a397fb9b7407fb93505203563808"},"breadcrumb":{"@id":"https://blog.michael.franzl.name/2017/10/16/phantom-py/#breadcrumb"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://blog.michael.franzl.name/2017/10/16/phantom-py/"]}]},{"@type":"BreadcrumbList","@id":"https://blog.michael.franzl.name/2017/10/16/phantom-py/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://blog.michael.franzl.name/"},{"@type":"ListItem","position":2,"name":"phantom.py: A lean replacement for bulky headless browser frameworks"}]},{"@type":"Person","@id":"https://blog.michael.franzl.name/#/schema/person/c9c6a397fb9b7407fb93505203563808","name":"Michael Franzl","image":{"@type":"ImageObject","@id":"https://blog.michael.franzl.name/#personlogo","inLanguage":"en-US","url":"https://secure.gravatar.com/avatar/35aa7406c2de620486b468795f405647?s=96&d=mm&r=g","contentUrl":"https://secure.gravatar.com/avatar/35aa7406c2de620486b468795f405647?s=96&d=mm&r=g","caption":"Michael Franzl"},"sameAs":["https://blog.michael.franzl.name"],"url":"https://blog.michael.franzl.name/author/admin/"}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link href='https://fonts.gstatic.com' crossorigin rel='preconnect' />
+<link rel="alternate" type="application/rss+xml" title="Michael Franzl &raquo; Feed" href="https://blog.michael.franzl.name/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Michael Franzl &raquo; Comments Feed" href="https://blog.michael.franzl.name/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Michael Franzl &raquo; phantom.py: A lean replacement for bulky headless browser frameworks Comments Feed" href="https://blog.michael.franzl.name/2017/10/16/phantom-py/feed/" />
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/13.1.0\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/blog.michael.franzl.name\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.9.5"}};
+/*! This file is auto-generated */
+!function(e,a,t){var n,r,o,i=a.createElement("canvas"),p=i.getContext&&i.getContext("2d");function s(e,t){var a=String.fromCharCode;p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,e),0,0);e=i.toDataURL();return p.clearRect(0,0,i.width,i.height),p.fillText(a.apply(this,t),0,0),e===i.toDataURL()}function c(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(o=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},r=0;r<o.length;r++)t.supports[o[r]]=function(e){if(!p||!p.fillText)return!1;switch(p.textBaseline="top",p.font="600 32px Arial",e){case"flag":return s([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])?!1:!s([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!s([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]);case"emoji":return!s([10084,65039,8205,55357,56613],[10084,65039,8203,55357,56613])}return!1}(o[r]),t.supports.everything=t.supports.everything&&t.supports[o[r]],"flag"!==o[r]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[o[r]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(n=t.source||{}).concatemoji?c(n.concatemoji):n.wpemoji&&n.twemoji&&(c(n.twemoji),c(n.wpemoji)))}(window,document,window._wpemojiSettings);
+</script>
+<style>
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 0.07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='wp-block-library-css'  href='https://blog.michael.franzl.name/wp-includes/css/dist/block-library/style.min.css?ver=5.9.5' media='all' />
+<style id='wp-block-library-theme-inline-css'>
+.wp-block-audio figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-audio figcaption{color:hsla(0,0%,100%,.65)}.wp-block-code>code{font-family:Menlo,Consolas,monaco,monospace;color:#1e1e1e;padding:.8em 1em;border:1px solid #ddd;border-radius:4px}.wp-block-embed figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-embed figcaption{color:hsla(0,0%,100%,.65)}.blocks-gallery-caption{color:#555;font-size:13px;text-align:center}.is-dark-theme .blocks-gallery-caption{color:hsla(0,0%,100%,.65)}.wp-block-image figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-image figcaption{color:hsla(0,0%,100%,.65)}.wp-block-pullquote{border-top:4px solid;border-bottom:4px solid;margin-bottom:1.75em;color:currentColor}.wp-block-pullquote__citation,.wp-block-pullquote cite,.wp-block-pullquote footer{color:currentColor;text-transform:uppercase;font-size:.8125em;font-style:normal}.wp-block-quote{border-left:.25em solid;margin:0 0 1.75em;padding-left:1em}.wp-block-quote cite,.wp-block-quote footer{color:currentColor;font-size:.8125em;position:relative;font-style:normal}.wp-block-quote.has-text-align-right{border-left:none;border-right:.25em solid;padding-left:0;padding-right:1em}.wp-block-quote.has-text-align-center{border:none;padding-left:0}.wp-block-quote.is-large,.wp-block-quote.is-style-large,.wp-block-quote.is-style-plain{border:none}.wp-block-search .wp-block-search__label{font-weight:700}.wp-block-group:where(.has-background){padding:1.25em 2.375em}.wp-block-separator{border:none;border-bottom:2px solid;margin-left:auto;margin-right:auto;opacity:.4}.wp-block-separator:not(.is-style-wide):not(.is-style-dots){width:100px}.wp-block-separator.has-background:not(.is-style-dots){border-bottom:none;height:1px}.wp-block-separator.has-background:not(.is-style-wide):not(.is-style-dots){height:2px}.wp-block-table thead{border-bottom:3px solid}.wp-block-table tfoot{border-top:3px solid}.wp-block-table td,.wp-block-table th{padding:.5em;border:1px solid;word-break:normal}.wp-block-table figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-table figcaption{color:hsla(0,0%,100%,.65)}.wp-block-video figcaption{color:#555;font-size:13px;text-align:center}.is-dark-theme .wp-block-video figcaption{color:hsla(0,0%,100%,.65)}.wp-block-template-part.has-background{padding:1.25em 2.375em;margin-top:0;margin-bottom:0}
+</style>
+<link rel='stylesheet' id='quotescollection-block-quotes-css'  href='https://blog.michael.franzl.name/wp-content/plugins/quotes-collection/blocks/quotes/style.css?ver=1564412679' media='all' />
+<link rel='stylesheet' id='quotescollection-block-random-quote-css'  href='https://blog.michael.franzl.name/wp-content/plugins/quotes-collection/blocks/random-quote/style.css?ver=1564412679' media='all' />
+<link rel='stylesheet' id='wp-components-css'  href='https://blog.michael.franzl.name/wp-includes/css/dist/components/style.min.css?ver=5.9.5' media='all' />
+<link rel='stylesheet' id='wp-block-editor-css'  href='https://blog.michael.franzl.name/wp-includes/css/dist/block-editor/style.min.css?ver=5.9.5' media='all' />
+<link rel='stylesheet' id='wp-nux-css'  href='https://blog.michael.franzl.name/wp-includes/css/dist/nux/style.min.css?ver=5.9.5' media='all' />
+<link rel='stylesheet' id='wp-reusable-blocks-css'  href='https://blog.michael.franzl.name/wp-includes/css/dist/reusable-blocks/style.min.css?ver=5.9.5' media='all' />
+<link rel='stylesheet' id='wp-editor-css'  href='https://blog.michael.franzl.name/wp-includes/css/dist/editor/style.min.css?ver=5.9.5' media='all' />
+<link rel='stylesheet' id='sld_block-cgb-style-css-css'  href='https://blog.michael.franzl.name/wp-content/plugins/simple-link-directory/gutenberg/sld-block/dist/blocks.style.build.css?ver=5.9.5' media='all' />
+<style id='global-styles-inline-css'>
+body{--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #fff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--color--dark-gray: #1a1a1a;--wp--preset--color--medium-gray: #686868;--wp--preset--color--light-gray: #e5e5e5;--wp--preset--color--blue-gray: #4d545c;--wp--preset--color--bright-blue: #007acc;--wp--preset--color--light-blue: #9adffd;--wp--preset--color--dark-brown: #402b30;--wp--preset--color--medium-brown: #774e24;--wp--preset--color--dark-red: #640c1f;--wp--preset--color--bright-red: #ff675f;--wp--preset--color--yellow: #ffef8e;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--duotone--dark-grayscale: url('#wp-duotone-dark-grayscale');--wp--preset--duotone--grayscale: url('#wp-duotone-grayscale');--wp--preset--duotone--purple-yellow: url('#wp-duotone-purple-yellow');--wp--preset--duotone--blue-red: url('#wp-duotone-blue-red');--wp--preset--duotone--midnight: url('#wp-duotone-midnight');--wp--preset--duotone--magenta-yellow: url('#wp-duotone-magenta-yellow');--wp--preset--duotone--purple-green: url('#wp-duotone-purple-green');--wp--preset--duotone--blue-orange: url('#wp-duotone-blue-orange');--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<link rel='stylesheet' id='mkaz-code-syntax-prism-css-css'  href='https://blog.michael.franzl.name/wp-content/plugins/code-syntax-block/assets/prism-a11y-dark.css?ver=1641643936' media='all' />
+<link rel='stylesheet' id='juiz_outdated_post_message-css'  href='https://blog.michael.franzl.name/wp-content/plugins/juiz-outdated-post-message/css/juiz-odpm-styles.css?ver=1.0.3' media='all' />
+<link rel='stylesheet' id='quotescollection-css'  href='https://blog.michael.franzl.name/wp-content/plugins/quotes-collection/css/quotes-collection.css?ver=2.5.2' media='all' />
+<link rel='stylesheet' id='wordpress-popular-posts-css-css'  href='https://blog.michael.franzl.name/wp-content/plugins/wordpress-popular-posts/assets/css/wpp.css?ver=5.5.1' media='all' />
+<link rel='stylesheet' id='twentysixteen-fonts-css'  href='https://fonts.googleapis.com/css?family=Merriweather%3A400%2C700%2C900%2C400italic%2C700italic%2C900italic%7CMontserrat%3A400%2C700%7CInconsolata%3A400&#038;subset=latin%2Clatin-ext&#038;display=fallback' media='all' />
+<link rel='stylesheet' id='genericons-css'  href='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/genericons/genericons.css?ver=20201208' media='all' />
+<link rel='stylesheet' id='twentysixteen-style-css'  href='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/style.css?ver=20201208' media='all' />
+<link rel='stylesheet' id='twentysixteen-block-style-css'  href='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/css/blocks.css?ver=20190102' media='all' />
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='twentysixteen-ie-css'  href='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/css/ie.css?ver=20170530' media='all' />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel='stylesheet' id='twentysixteen-ie8-css'  href='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/css/ie8.css?ver=20170530' media='all' />
+<![endif]-->
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='twentysixteen-ie7-css'  href='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/css/ie7.css?ver=20170530' media='all' />
+<![endif]-->
+<link rel='stylesheet' id='sedlex_styles-css'  href='https://blog.michael.franzl.name/wp-content/sedlex/inline_styles/7ae4ebbf8537277d93642a6c1040cb4406ab77e8.css?ver=20221115' media='all' />
+<script src='https://blog.michael.franzl.name/wp-includes/js/jquery/jquery.min.js?ver=3.6.0' id='jquery-core-js'></script>
+<script src='https://blog.michael.franzl.name/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.3.2' id='jquery-migrate-js'></script>
+<script id='quotescollection-js-extra'>
+var quotescollectionAjax = {"ajaxUrl":"https:\/\/blog.michael.franzl.name\/wp-admin\/admin-ajax.php","nonce":"9543b29b94","nextQuote":"Next quote \u00bb","loading":"Loading...","error":"Error getting quote","autoRefreshMax":"20","autoRefreshCount":"0"};
+</script>
+<script src='https://blog.michael.franzl.name/wp-content/plugins/quotes-collection/js/quotes-collection.js?ver=2.5.2' id='quotescollection-js'></script>
+<script id='wpp-json' type="application/json">
+{"sampling_active":0,"sampling_rate":100,"ajax_url":"https:\/\/blog.michael.franzl.name\/wp-json\/wordpress-popular-posts\/v1\/popular-posts","api_url":"https:\/\/blog.michael.franzl.name\/wp-json\/wordpress-popular-posts","ID":673,"token":"2e66882b6f","lang":0,"debug":0}
+</script>
+<script src='https://blog.michael.franzl.name/wp-content/plugins/wordpress-popular-posts/assets/js/wpp.min.js?ver=5.5.1' id='wpp-js-js'></script>
+<!--[if lt IE 9]>
+<script src='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/js/html5.js?ver=3.7.3' id='twentysixteen-html5-js'></script>
+<![endif]-->
+<script src='https://blog.michael.franzl.name/wp-content/sedlex/inline_scripts/fdee0148bf403f0c408e1dc524052f855f9d5b9b.js?ver=20221115' id='sedlex_scripts-js'></script>
+<link rel="https://api.w.org/" href="https://blog.michael.franzl.name/wp-json/" /><link rel="alternate" type="application/json" href="https://blog.michael.franzl.name/wp-json/wp/v2/posts/673" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://blog.michael.franzl.name/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://blog.michael.franzl.name/wp-includes/wlwmanifest.xml" /> 
+<meta name="generator" content="WordPress 5.9.5" />
+<link rel='shortlink' href='https://blog.michael.franzl.name/?p=673' />
+<link rel="alternate" type="application/json+oembed" href="https://blog.michael.franzl.name/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.michael.franzl.name%2F2017%2F10%2F16%2Fphantom-py%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://blog.michael.franzl.name/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fblog.michael.franzl.name%2F2017%2F10%2F16%2Fphantom-py%2F&#038;format=xml" />
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-54561513-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script data-ad-client="ca-pub-6784924384216754" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  //(adsbygoogle = window.adsbygoogle || []).push({
+  //  google_ad_client: "ca-pub-6784924384216754",
+  //  enable_page_level_ads: true
+  //});
+</script>
+<script type="text/javascript">
+           var ajaxurl = "https://blog.michael.franzl.name/wp-admin/admin-ajax.php";
+         </script>            <style id="wpp-loading-animation-styles">@-webkit-keyframes bgslide{from{background-position-x:0}to{background-position-x:-200%}}@keyframes bgslide{from{background-position-x:0}to{background-position-x:-200%}}.wpp-widget-placeholder,.wpp-widget-block-placeholder{margin:0 auto;width:60px;height:3px;background:#dd3737;background:linear-gradient(90deg,#dd3737 0%,#571313 10%,#dd3737 100%);background-size:200% auto;border-radius:3px;-webkit-animation:bgslide 1s infinite linear;animation:bgslide 1s infinite linear}</style>
+            <style>.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration  -->
+
+<!-- END recaptcha -->
+<link rel="icon" href="https://blog.michael.franzl.name/wp-content/uploads/2019/07/cropped-Wake_on_LAN_connector-32x32.jpg" sizes="32x32" />
+<link rel="icon" href="https://blog.michael.franzl.name/wp-content/uploads/2019/07/cropped-Wake_on_LAN_connector-192x192.jpg" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://blog.michael.franzl.name/wp-content/uploads/2019/07/cropped-Wake_on_LAN_connector-180x180.jpg" />
+<meta name="msapplication-TileImage" content="https://blog.michael.franzl.name/wp-content/uploads/2019/07/cropped-Wake_on_LAN_connector-270x270.jpg" />
+		<style id="wp-custom-css">
+			pre {
+	font-size: 80%;
+	overflow: visible;
+	padding: 1%;
+	white-space: pre;
+	border-right: none;
+	font-family: monospace;
+}
+
+pre.wp-block-code code {
+	font-size: 90%;
+	color: inherit;
+}		</style>
+		</head>
+
+<body class="post-template-default single single-post postid-673 single-format-standard wp-embed-responsive">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-dark-grayscale"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 0.49803921568627" /><feFuncG type="table" tableValues="0 0.49803921568627" /><feFuncB type="table" tableValues="0 0.49803921568627" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-grayscale"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 1" /><feFuncG type="table" tableValues="0 1" /><feFuncB type="table" tableValues="0 1" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-purple-yellow"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.54901960784314 0.98823529411765" /><feFuncG type="table" tableValues="0 1" /><feFuncB type="table" tableValues="0.71764705882353 0.25490196078431" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-blue-red"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 1" /><feFuncG type="table" tableValues="0 0.27843137254902" /><feFuncB type="table" tableValues="0.5921568627451 0.27843137254902" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-midnight"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0 0" /><feFuncG type="table" tableValues="0 0.64705882352941" /><feFuncB type="table" tableValues="0 1" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-magenta-yellow"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.78039215686275 1" /><feFuncG type="table" tableValues="0 0.94901960784314" /><feFuncB type="table" tableValues="0.35294117647059 0.47058823529412" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-purple-green"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.65098039215686 0.40392156862745" /><feFuncG type="table" tableValues="0 1" /><feFuncB type="table" tableValues="0.44705882352941 0.4" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 0 0" width="0" height="0" focusable="false" role="none" style="visibility: hidden; position: absolute; left: -9999px; overflow: hidden;" ><defs><filter id="wp-duotone-blue-orange"><feColorMatrix color-interpolation-filters="sRGB" type="matrix" values=" .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 .299 .587 .114 0 0 " /><feComponentTransfer color-interpolation-filters="sRGB" ><feFuncR type="table" tableValues="0.098039215686275 1" /><feFuncG type="table" tableValues="0 0.66274509803922" /><feFuncB type="table" tableValues="0.84705882352941 0.41960784313725" /><feFuncA type="table" tableValues="1 1" /></feComponentTransfer><feComposite in2="SourceGraphic" operator="in" /></filter></defs></svg><div id="page" class="site">
+	<div class="site-inner">
+		<a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+		<header id="masthead" class="site-header" role="banner">
+			<div class="site-header-main">
+				<div class="site-branding">
+					
+											<p class="site-title"><a href="https://blog.michael.franzl.name/" rel="home">Michael Franzl</a></p>
+												<p class="site-description">Adventures with Technology</p>
+									</div><!-- .site-branding -->
+
+							</div><!-- .site-header-main -->
+
+					</header><!-- .site-header -->
+
+		<div id="content" class="site-content">
+
+<div id="primary" class="content-area">
+	<main id="main" class="site-main" role="main">
+		
+<article id="post-673" class="post-673 post type-post status-publish format-standard hentry category-computer-science category-software category-tutorials tag-automation tag-headless-browser tag-pdf tag-python">
+	<header class="entry-header">
+		<h1 class="entry-title">phantom.py: A lean replacement for bulky headless browser frameworks</h1>	</header><!-- .entry-header -->
+
+	
+	
+	<div class="entry-content">
+		
+<p>This is a simple but fully scriptable headless QtWebKit browser using PyQt5 in Python3, specialized in executing external JavaScript and generating PDF files. A lean replacement for other bulky headless browser frameworks. (Source code at end of this post as well as in this <a href="https://gist.github.com/michaelfranzl/91f0cc13c56120391b949f885643e974">github gist</a>)</p>
+
+
+
+<h2>Usage</h2>
+
+
+
+<p>If you have a display attached:</p>
+
+
+
+<pre class="wp-block-code lang:sh decode:true"><code lang="bash" class="language-bash">./phantom.py &lt;url&gt; &lt;pdf-file&gt; [&lt;javascript-file&gt;]</code></pre>
+
+
+
+<p>If you don’t have a display attached (i.e. on a remote server):</p>
+
+
+
+<pre class="wp-block-code lang:sh decode:true"><code lang="bash" class="language-bash">xvfb-run ./phantom.py &lt;url&gt; &lt;pdf-file&gt; [&lt;javascript-file&gt;]</code></pre>
+
+
+
+<p>Arguments:</p>
+
+
+
+<ul><li><em>&lt;url&gt;</em> Can be a http(s) URL or a path to a local file</li><li><em>&lt;pdf-file&gt;</em> Path and name of PDF file to generate</li><li><em>[&lt;javascript-file&gt;]</em> (optional) Path and name of a JavaScript file to execute</li></ul>
+
+
+
+<h2 id="features">Features</h2>
+
+
+
+<ul><li>Generate a PDF screenshot of the web page after it is completely loaded.</li><li>Optionally execute a local JavaScript file specified by the argument <em>&lt;javascript-file></em> after the web page is completely loaded, and before the PDF is generated.</li><li>console.log’s will be printed to stdout.</li><li>Easily add new features by changing the source code of this script, without compiling C++ code. For more advanced applications, consider attaching PyQt objects/methods to WebKit’s JavaScript space by using <code>QWebFrame::addToJavaScriptWindowObject()</code>.</li></ul>
+
+
+
+<p>If you execute an external <em>&lt;javascript-file></em>, phantom.py has no way of knowing when that script has finished doing its work. For this reason, the external script should execute <code>console.log("__PHANTOM_PY_DONE__");</code> when done. This will trigger the PDF generation, after which phantom.py will exit. If no <code>__PHANTOM_PY_DONE__</code> string is seen on the console for 10 seconds, phantom.py will exit without doing anything. This behavior could be implemented more elegantly without console.log’s but it is the simplest solution.</p>
+
+
+
+<p>It is important to remember that since you’re just running WebKit, you can use everything that WebKit supports, including the usual JS client libraries, CSS, CSS @media types, etc.</p>
+
+
+
+<h2 id="dependencies">Dependencies</h2>
+
+
+
+<ul><li>Python3</li><li>PyQt5</li><li>xvfb (optional for display-less machines)</li></ul>
+
+
+
+<p>Installation of dependencies in Debian Stretch is easy:</p>
+
+
+
+<pre class="wp-block-code lang:sh decode:true"><code lang="bash" class="language-bash">apt-get install xvfb python3-pyqt5 python3-pyqt5.qtwebkit</code></pre>
+
+
+
+<p>Finding the equivalent for other OSes is an exercise that I leave to you.</p>
+
+
+
+<h2 id="examples">Examples</h2>
+
+
+
+<p>Given the following file <code>/tmp/test.html</code>:</p>
+
+
+
+<pre class="wp-block-code lang:haskell highlight:0 decode:true"><code lang="markup" class="language-markup">&lt;html&gt;
+  &lt;body&gt;
+    &lt;p&gt;foo &lt;span id="id1"&gt;foo&lt;/span&gt; &lt;span id="id2"&gt;foo&lt;/span&gt;&lt;/p&gt;
+  &lt;/body&gt;
+  &lt;script&gt;
+    document.getElementById('id1').innerHTML = "bar";
+  &lt;/script&gt;
+&lt;/html&gt;</code></pre>
+
+
+
+<p>… and the following file <code>/tmp/test.js</code>:</p>
+
+
+
+<pre class="wp-block-code lang:js decode:true"><code lang="javascript" class="language-javascript">document.getElementById('id2').innerHTML = "baz";
+console.log("__PHANTOM_PY_DONE__");</code></pre>
+
+
+
+<p>… and running this script (without attached display) …</p>
+
+
+
+<pre class="wp-block-code lang:sh decode:true"><code lang="bash" class="language-bash">xvfb-run python3 phantom.py /tmp/test.html /tmp/out.pdf /tmp/test.js</code></pre>
+
+
+
+<p>… you will get a PDF file <code>/tmp/out.pdf</code> with the contents <strong>“foo bar baz”.</strong></p>
+
+
+
+<p>Note that the second occurrence of “foo” has been replaced by the web page’s own script, and the third occurrence of “foo” by the external JS file.</p>
+
+
+
+<h2>Source Code</h2>
+
+
+
+<pre class="wp-block-code lang:python decode:true"><code lang="python" class="language-python">"""
+# phantom.py
+
+Simple but fully scriptable headless QtWebKit browser using PyQt5 in Python3,
+specialized in executing external JavaScript and generating PDF files. A lean
+replacement for other bulky headless browser frameworks.
+
+Copyright 2017 Michael Karl Franzl
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+"""
+
+import sys
+from PyQt5.QtCore import QUrl
+from PyQt5.QtWebKitWidgets import QWebPage
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtPrintSupport import QPrinter
+from PyQt5.QtCore import QTimer
+import traceback
+
+  
+class Render(QWebPage):
+  def __init__(self, url, outfile, jsfile):
+    self.app = QApplication(sys.argv)
+    
+    QWebPage.__init__(self)
+
+    self.jsfile = jsfile
+    self.outfile = outfile
+    
+    qurl = QUrl.fromUserInput(url)
+    
+    print("phantom.py: URL=", qurl, "OUTFILE=", outfile, "JSFILE=", jsfile)
+    
+    # The PDF generation only happens when the special string __PHANTOM_PY_DONE__
+    # is sent to console.log(). The following JS string will be executed by
+    # default, when no external JavaScript file is specified.
+    self.js_contents = "setTimeout(function() { console.log('__PHANTOM_PY_DONE__') }, 500);";
+    
+    if jsfile:
+      try:
+        f = open(self.jsfile)
+        self.js_contents = f.read()
+        f.close()
+      except:
+        print(traceback.format_exc())
+        self._exit(10)
+        
+    self.loadFinished.connect(self._loadFinished)
+    self.mainFrame().load(qurl)
+    self.javaScriptConsoleMessage = self._onConsoleMessage
+    
+    # Run for a maximum of 10 seconds
+    watchdog = QTimer()
+    watchdog.setSingleShot(True)
+    watchdog.timeout.connect(lambda: self._exit(1))
+    watchdog.start(10000)
+    
+    self.app.exec_()
+    
+    
+  def _onConsoleMessage(self, txt, lineno, filename):
+    print("CONSOLE", lineno, txt, filename)
+    if "__PHANTOM_PY_DONE__" in txt:
+      # If we get this magic string, it means that the external JS is done
+      self._print()
+      self._exit(0)
+  
+  
+  def _loadFinished(self, result):
+    print("phantom.py: Loading finished!")
+    print("phantom.py: Evaluating JS from", self.jsfile)
+    self.frame = self.mainFrame()
+    self.frame.evaluateJavaScript(self.js_contents)
+    
+
+  def _print(self):
+    print("phantom.py: Printing...")
+    printer = QPrinter()
+    printer.setPageMargins(10, 10, 10, 10, QPrinter.Millimeter)
+    printer.setPaperSize(QPrinter.A4)
+    printer.setCreator("phantom.py by Michael Karl Franzl")
+    printer.setOutputFormat(QPrinter.PdfFormat);
+    printer.setOutputFileName(self.outfile);
+    self.frame.print(printer)
+    
+  def _exit(self, val):
+    print("phantom.py: Exiting with val", val)
+    self.app.exit(val) # Qt exit
+    exit(val) # Python exit
+    
+    
+def main():
+  if (len(sys.argv) &lt; 3):
+    print("USAGE: ./phantom.py &lt;url&gt; &lt;pdf-file&gt; [&lt;javascript-file&gt;]")
+  else:
+    url = sys.argv[1]
+    outfile = sys.argv[2]
+    jsfile = sys.argv[3] if len(sys.argv) &gt; 3 else None
+    r = Render(url, outfile, jsfile)
+
+
+if __name__ == "__main__":
+  main()</code></pre>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<span class="byline"><span class="author vcard"><img alt='' src='https://secure.gravatar.com/avatar/35aa7406c2de620486b468795f405647?s=49&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/35aa7406c2de620486b468795f405647?s=98&#038;d=mm&#038;r=g 2x' class='avatar avatar-49 photo' height='49' width='49' loading='lazy'/><span class="screen-reader-text">Author </span> <a class="url fn n" href="https://blog.michael.franzl.name/author/admin/">Michael Franzl</a></span></span><span class="posted-on"><span class="screen-reader-text">Posted on </span><a href="https://blog.michael.franzl.name/2017/10/16/phantom-py/" rel="bookmark"><time class="entry-date published" datetime="2017-10-16T09:50:21+00:00">2017-10-16</time><time class="updated" datetime="2021-02-07T09:44:20+00:00">2021-02-07</time></a></span><span class="cat-links"><span class="screen-reader-text">Categories </span><a href="https://blog.michael.franzl.name/category/computer-science/" rel="category tag">Computer Science</a>, <a href="https://blog.michael.franzl.name/category/computer-science/software/" rel="category tag">Software</a>, <a href="https://blog.michael.franzl.name/category/computer-science/tutorials/" rel="category tag">Tutorials</a></span><span class="tags-links"><span class="screen-reader-text">Tags </span><a href="https://blog.michael.franzl.name/tag/automation/" rel="tag">automation</a>, <a href="https://blog.michael.franzl.name/tag/headless-browser/" rel="tag">headless browser</a>, <a href="https://blog.michael.franzl.name/tag/pdf/" rel="tag">PDF</a>, <a href="https://blog.michael.franzl.name/tag/python/" rel="tag">python</a></span>			</footer><!-- .entry-footer -->
+</article><!-- #post-673 -->
+
+<div id="comments" class="comments-area">
+
+			<h2 class="comments-title">
+			2 thoughts on &ldquo;phantom.py: A lean replacement for bulky headless browser frameworks&rdquo;		</h2>
+
+		
+		<ol class="comment-list">
+					<li id="comment-35326" class="pingback even thread-even depth-1">
+			<div class="comment-body">
+				Pingback: <a href='https://blog.michael.franzl.name/2017/10/16/phantomjs-alternative-write-short-pyqt-scripts-phantom-py/' rel='external nofollow ugc' class='url'>PhantomJS alternative: Write short PyQt scripts: phantom.py - Michael Franzl</a> 			</div>
+		</li><!-- #comment-## -->
+		<li id="comment-35327" class="pingback odd alt thread-odd thread-alt depth-1">
+			<div class="comment-body">
+				Pingback: <a href='https://blog.michael.franzl.name/2017/10/16/phantomjs-alternative-write-short-pyqt-scripts-instead-phantom-py/' rel='external nofollow ugc' class='url'>PhantomJS alternative: Write short PyQt scripts instead (phantom.py) - Michael Franzl</a> 			</div>
+		</li><!-- #comment-## -->
+		</ol><!-- .comment-list -->
+
+		
+	
+	
+		<div id="respond" class="comment-respond">
+		<h2 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2017/10/16/phantom-py/#respond" style="display:none;">Cancel reply</a></small></h2><form action="https://blog.michael.franzl.name/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> <span class="required-field-message" aria-hidden="true">Required fields are marked <span class="required" aria-hidden="true">*</span></span></p><p class="comment-form-comment"><label for="comment">Comment <span class="required" aria-hidden="true">*</span></label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required></textarea></p><p><div  id="g-recaptcha-0" class="g-recaptcha" data-sitekey="6LcfXyETAAAAAK19_BBkrieM2y9B2p-2oUz2e483" data-theme="light"></div><noscript>Please enable JavaScript to submit this form.<br></noscript></p><p class="comment-form-author"><label for="author">Name <span class="required" aria-hidden="true">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required /></p>
+<p class="comment-form-email"><label for="email">Email <span class="required" aria-hidden="true">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" required /></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='673' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="314df01a90" /></p><p style="display: none !important;"><label>&#916;<textarea name="ak_hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label><input type="hidden" id="ak_js_1" name="ak_js" value="185"/><script>document.getElementById( "ak_js_1" ).setAttribute( "value", ( new Date() ).getTime() );</script></p></form>	</div><!-- #respond -->
+	<p class="akismet_comment_form_privacy_notice">This site uses Akismet to reduce spam. <a href="https://akismet.com/privacy/" target="_blank" rel="nofollow noopener">Learn how your comment data is processed</a>.</p>
+</div><!-- .comments-area -->
+
+	<nav class="navigation post-navigation" aria-label="Posts">
+		<h2 class="screen-reader-text">Post navigation</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="https://blog.michael.franzl.name/2017/09/06/open-source-not-imply-less-secure/" rel="prev"><span class="meta-nav" aria-hidden="true">Previous</span> <span class="screen-reader-text">Previous post:</span> <span class="post-title">&#8220;Open Source&#8221; does not imply &#8220;less secure&#8221;</span></a></div><div class="nav-next"><a href="https://blog.michael.franzl.name/2017/10/16/phantomjs-alternative-write-short-pyqt-scripts-instead-phantom-py/" rel="next"><span class="meta-nav" aria-hidden="true">Next</span> <span class="screen-reader-text">Next post:</span> <span class="post-title">PhantomJS alternative: Write short PyQt scripts instead (phantom.py)</span></a></div></div>
+	</nav>
+	</main><!-- .site-main -->
+
+	
+</div><!-- .content-area -->
+
+
+	<aside id="secondary" class="sidebar widget-area" role="complementary">
+		<section id="custom_html-2" class="widget_text widget widget_custom_html"><div class="textwidget custom-html-widget"><a href="https://stackexchange.com/users/311924">
+<img src="https://stackexchange.com/users/flair/311924.png" width="208" height="58" alt="profile for Michael Franzl on Stack Exchange, a network of free, community-driven Q&amp;A sites" title="profile for Michael Franzl on Stack Exchange, a network of free, community-driven Q&amp;A sites">
+</a>
+
+<br/>
+<br/>
+<br/>
+
+<!-- Google Plus -->
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<div class="g-person" data-href="https://plus.google.com/104808900673947410989" data-layout="landscape"></div></div></section><section id="search-3" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="https://blog.michael.franzl.name/">
+	<label>
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" class="search-field" placeholder="Search &hellip;" value="" name="s" />
+	</label>
+	<button type="submit" class="search-submit"><span class="screen-reader-text">Search</span></button>
+</form>
+</section><section id="quotescollection-4" class="widget widget_quotescollection"><h2 class="widget-title">My favourite quotes</h2>
+<div class="quotescollection-quote-wrapper" id="w_quotescollection_4"><p>The two most powerful warriors are patience and time.</p>
+<div class="attribution">&mdash;&nbsp;<cite class="author">Leo Tolstoy</cite></div></div></section>
+		<section id="recent-posts-3" class="widget widget_recent_entries">
+		<h2 class="widget-title">Recent Posts</h2><nav aria-label="Recent Posts">
+		<ul>
+											<li>
+					<a href="https://blog.michael.franzl.name/2022/01/08/how-to-install-opencl-for-nvidia-gpu-on-debian-11-bullseye/">How to set up Nvidia GPGPU computing using just the official Debian 11 repos</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/12/05/donate-your-computing-power-to-science-how-to-run-containerized-boinc-with-opencl-and-virtualbox/">Donating computing power to Science: How to run containerized BOINC with OpenCL and VirtualBox</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/11/29/how-to-install-foss-opencl-for-amd-gpu-on-debian-11-bullseye/">How to install FOSS OpenCL for AMD GPU on Debian 11 (Bullseye)</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/07/18/failed-to-suspend-system-system-resumed-again-no-space-left-on-device-how-to-increase-swap-by-taking-the-space-from-a-different-logical-volume/">&#8220;Failed to suspend system. System resumed again: No space left on device&#8221;: How to increase swap by taking the space from a different logical volume</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/03/21/performance-comparison-of-three-different-implementations-of-dynamic_cast/">Performance comparison of three different implementations of dynamic_cast in C++</a>
+									</li>
+					</ul>
+
+		</nav></section><section id="media_image-3" class="widget widget_media_image"><h2 class="widget-title">Featured picture</h2><figure style="width: 1024px" class="wp-caption alignnone"><a href="https://i.redd.it/qxgq42bpxlp41.jpg"><img class="image " src="https://i.redd.it/qxgq42bpxlp41.jpg" alt="Techniques of Science Denial" width="1024" height="1024" /></a><figcaption class="wp-caption-text">Techniques of Science Denial</figcaption></figure></section><section id="recent-comments-3" class="widget widget_recent_comments"><h2 class="widget-title">Recent Comments</h2><nav aria-label="Recent Comments"><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Peter</span> on <a href="https://blog.michael.franzl.name/2017/02/28/raspberry-pi-gateway-mobile-internet/#comment-39274">How to turn the Raspberry Pi into a Gateway to mobile phone internet</a></li><li class="recentcomments"><span class="comment-author-link">Tom F.</span> on <a href="https://blog.michael.franzl.name/2018/09/02/how-to-mount-google-drive-in-kdes-dolphin-file-manager/#comment-38027">How to mount Google Drive in KDE&#8217;s Dolphin file manager, in Debian 10 and 11</a></li><li class="recentcomments"><span class="comment-author-link">Tom F.</span> on <a href="https://blog.michael.franzl.name/2018/09/02/how-to-mount-google-drive-in-kdes-dolphin-file-manager/#comment-38026">How to mount Google Drive in KDE&#8217;s Dolphin file manager, in Debian 10 and 11</a></li><li class="recentcomments"><span class="comment-author-link">Mike</span> on <a href="https://blog.michael.franzl.name/2017/02/28/raspberry-pi-gateway-mobile-internet/#comment-37812">How to turn the Raspberry Pi into a Gateway to mobile phone internet</a></li><li class="recentcomments"><span class="comment-author-link">Michele</span> on <a href="https://blog.michael.franzl.name/2017/02/28/raspberry-pi-gateway-mobile-internet/#comment-37765">How to turn the Raspberry Pi into a Gateway to mobile phone internet</a></li></ul></nav></section><section id="categories-2" class="widget widget_categories"><h2 class="widget-title">Categories</h2><nav aria-label="Categories">
+			<ul>
+					<li class="cat-item cat-item-88"><a href="https://blog.michael.franzl.name/category/astrophotography/">Astrophotography</a> (3)
+</li>
+	<li class="cat-item cat-item-112"><a href="https://blog.michael.franzl.name/category/computer-science/">Computer Science</a> (56)
+</li>
+	<li class="cat-item cat-item-1"><a href="https://blog.michael.franzl.name/category/computer-science/gnulinux/debian/">Debian</a> (15)
+</li>
+	<li class="cat-item cat-item-49"><a href="https://blog.michael.franzl.name/category/electronics/">Electronics</a> (1)
+</li>
+	<li class="cat-item cat-item-50"><a href="https://blog.michael.franzl.name/category/general/">General</a> (7)
+</li>
+	<li class="cat-item cat-item-2"><a href="https://blog.michael.franzl.name/category/computer-science/gnulinux/">GNU/Linux</a> (35)
+</li>
+	<li class="cat-item cat-item-115"><a href="https://blog.michael.franzl.name/category/computer-science/hardware/">Hardware</a> (12)
+</li>
+	<li class="cat-item cat-item-117"><a href="https://blog.michael.franzl.name/category/computer-science/internet-radio/">Internet Radio</a> (2)
+</li>
+	<li class="cat-item cat-item-129"><a href="https://blog.michael.franzl.name/category/computer-science/multimedia/">Multimedia</a> (3)
+</li>
+	<li class="cat-item cat-item-114"><a href="https://blog.michael.franzl.name/category/computer-science/networking/">Networking</a> (13)
+</li>
+	<li class="cat-item cat-item-78"><a href="https://blog.michael.franzl.name/category/computer-science/obscure-errors/" title="Errors are not always very descriptive. I am collecting them here to help others solve them more quickly.">Obscure Errors</a> (9)
+</li>
+	<li class="cat-item cat-item-79"><a href="https://blog.michael.franzl.name/category/photography/">Photography</a> (1)
+</li>
+	<li class="cat-item cat-item-116"><a href="https://blog.michael.franzl.name/category/computer-science/programming/">Programming</a> (7)
+</li>
+	<li class="cat-item cat-item-87"><a href="https://blog.michael.franzl.name/category/computer-science/raspberry-pi/">Raspberry Pi</a> (5)
+</li>
+	<li class="cat-item cat-item-113"><a href="https://blog.michael.franzl.name/category/computer-science/security/">Security</a> (10)
+</li>
+	<li class="cat-item cat-item-12"><a href="https://blog.michael.franzl.name/category/computer-science/server-administration/">Server Administration</a> (8)
+</li>
+	<li class="cat-item cat-item-48"><a href="https://blog.michael.franzl.name/category/computer-science/software/">Software</a> (21)
+</li>
+	<li class="cat-item cat-item-3"><a href="https://blog.michael.franzl.name/category/computer-science/software/latex/">TeX Typesetting</a> (3)
+</li>
+	<li class="cat-item cat-item-83"><a href="https://blog.michael.franzl.name/category/computer-science/tutorials/" title="Step-by-step guides">Tutorials</a> (32)
+</li>
+			</ul>
+
+			</nav></section>
+		<section id="recent-posts-2" class="widget widget_recent_entries">
+		<h2 class="widget-title">Recent Posts</h2><nav aria-label="Recent Posts">
+		<ul>
+											<li>
+					<a href="https://blog.michael.franzl.name/2022/01/08/how-to-install-opencl-for-nvidia-gpu-on-debian-11-bullseye/">How to set up Nvidia GPGPU computing using just the official Debian 11 repos</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/12/05/donate-your-computing-power-to-science-how-to-run-containerized-boinc-with-opencl-and-virtualbox/">Donating computing power to Science: How to run containerized BOINC with OpenCL and VirtualBox</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/11/29/how-to-install-foss-opencl-for-amd-gpu-on-debian-11-bullseye/">How to install FOSS OpenCL for AMD GPU on Debian 11 (Bullseye)</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/07/18/failed-to-suspend-system-system-resumed-again-no-space-left-on-device-how-to-increase-swap-by-taking-the-space-from-a-different-logical-volume/">&#8220;Failed to suspend system. System resumed again: No space left on device&#8221;: How to increase swap by taking the space from a different logical volume</a>
+									</li>
+											<li>
+					<a href="https://blog.michael.franzl.name/2021/03/21/performance-comparison-of-three-different-implementations-of-dynamic_cast/">Performance comparison of three different implementations of dynamic_cast in C++</a>
+									</li>
+					</ul>
+
+		</nav></section><section id="recent-comments-2" class="widget widget_recent_comments"><h2 class="widget-title">Recent Comments</h2><nav aria-label="Recent Comments"><ul id="recentcomments-2"><li class="recentcomments"><span class="comment-author-link">Peter</span> on <a href="https://blog.michael.franzl.name/2017/02/28/raspberry-pi-gateway-mobile-internet/#comment-39274">How to turn the Raspberry Pi into a Gateway to mobile phone internet</a></li><li class="recentcomments"><span class="comment-author-link">Tom F.</span> on <a href="https://blog.michael.franzl.name/2018/09/02/how-to-mount-google-drive-in-kdes-dolphin-file-manager/#comment-38027">How to mount Google Drive in KDE&#8217;s Dolphin file manager, in Debian 10 and 11</a></li><li class="recentcomments"><span class="comment-author-link">Tom F.</span> on <a href="https://blog.michael.franzl.name/2018/09/02/how-to-mount-google-drive-in-kdes-dolphin-file-manager/#comment-38026">How to mount Google Drive in KDE&#8217;s Dolphin file manager, in Debian 10 and 11</a></li><li class="recentcomments"><span class="comment-author-link">Mike</span> on <a href="https://blog.michael.franzl.name/2017/02/28/raspberry-pi-gateway-mobile-internet/#comment-37812">How to turn the Raspberry Pi into a Gateway to mobile phone internet</a></li><li class="recentcomments"><span class="comment-author-link">Michele</span> on <a href="https://blog.michael.franzl.name/2017/02/28/raspberry-pi-gateway-mobile-internet/#comment-37765">How to turn the Raspberry Pi into a Gateway to mobile phone internet</a></li></ul></nav></section><section id="tag_cloud-2" class="widget widget_tag_cloud"><h2 class="widget-title">Tags</h2><nav aria-label="Tags"><div class="tagcloud"><ul class='wp-tag-cloud' role='list'>
+	<li><a href="https://blog.michael.franzl.name/tag/astrophotography/" class="tag-cloud-link tag-link-90 tag-link-position-1" style="font-size: 1em;">astrophotography</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/audio/" class="tag-cloud-link tag-link-31 tag-link-position-2" style="font-size: 1em;">audio</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/automation/" class="tag-cloud-link tag-link-120 tag-link-position-3" style="font-size: 1em;">automation</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/backups/" class="tag-cloud-link tag-link-25 tag-link-position-4" style="font-size: 1em;">backups</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/cnc/" class="tag-cloud-link tag-link-18 tag-link-position-5" style="font-size: 1em;">cnc</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/database/" class="tag-cloud-link tag-link-27 tag-link-position-6" style="font-size: 1em;">database</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/debian-2/" class="tag-cloud-link tag-link-7 tag-link-position-7" style="font-size: 1em;">debian</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/dkim/" class="tag-cloud-link tag-link-43 tag-link-position-8" style="font-size: 1em;">dkim</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/exim/" class="tag-cloud-link tag-link-36 tag-link-position-9" style="font-size: 1em;">exim</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/file-permissions/" class="tag-cloud-link tag-link-10 tag-link-position-10" style="font-size: 1em;">file permissions</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/googledrive/" class="tag-cloud-link tag-link-140 tag-link-position-11" style="font-size: 1em;">GoogleDrive</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/greylisting/" class="tag-cloud-link tag-link-40 tag-link-position-12" style="font-size: 1em;">greylisting</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/grub/" class="tag-cloud-link tag-link-23 tag-link-position-13" style="font-size: 1em;">grub</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/gstreamer/" class="tag-cloud-link tag-link-130 tag-link-position-14" style="font-size: 1em;">GStreamer</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/hardware/" class="tag-cloud-link tag-link-30 tag-link-position-15" style="font-size: 1em;">hardware</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/headless-browser/" class="tag-cloud-link tag-link-119 tag-link-position-16" style="font-size: 1em;">headless browser</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/home-entertainment/" class="tag-cloud-link tag-link-41 tag-link-position-17" style="font-size: 1em;">home entertainment</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/internet-radio/" class="tag-cloud-link tag-link-33 tag-link-position-18" style="font-size: 1em;">internet radio</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/latex-2/" class="tag-cloud-link tag-link-34 tag-link-position-19" style="font-size: 1em;">latex</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/linux/" class="tag-cloud-link tag-link-6 tag-link-position-20" style="font-size: 1em;">linux</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/linux-kernel/" class="tag-cloud-link tag-link-85 tag-link-position-21" style="font-size: 1em;">Linux Kernel</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/mailserver/" class="tag-cloud-link tag-link-37 tag-link-position-22" style="font-size: 1em;">mailserver</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/malware/" class="tag-cloud-link tag-link-39 tag-link-position-23" style="font-size: 1em;">malware</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/media-server/" class="tag-cloud-link tag-link-42 tag-link-position-24" style="font-size: 1em;">media server</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/mysql/" class="tag-cloud-link tag-link-26 tag-link-position-25" style="font-size: 1em;">mysql</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/opengl/" class="tag-cloud-link tag-link-63 tag-link-position-26" style="font-size: 1em;">opengl</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/pdf/" class="tag-cloud-link tag-link-81 tag-link-position-27" style="font-size: 1em;">PDF</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/php/" class="tag-cloud-link tag-link-91 tag-link-position-28" style="font-size: 1em;">php</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/programming/" class="tag-cloud-link tag-link-64 tag-link-position-29" style="font-size: 1em;">programming</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/python/" class="tag-cloud-link tag-link-15 tag-link-position-30" style="font-size: 1em;">python</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/raid/" class="tag-cloud-link tag-link-24 tag-link-position-31" style="font-size: 1em;">raid</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/ram/" class="tag-cloud-link tag-link-29 tag-link-position-32" style="font-size: 1em;">ram</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/raspberry-pi/" class="tag-cloud-link tag-link-84 tag-link-position-33" style="font-size: 1em;">Raspberry Pi</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/security/" class="tag-cloud-link tag-link-68 tag-link-position-34" style="font-size: 1em;">security</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/segfault/" class="tag-cloud-link tag-link-28 tag-link-position-35" style="font-size: 1em;">segfault</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/server/" class="tag-cloud-link tag-link-8 tag-link-position-36" style="font-size: 1em;">server</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/spam/" class="tag-cloud-link tag-link-38 tag-link-position-37" style="font-size: 1em;">spam</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/ssh/" class="tag-cloud-link tag-link-4 tag-link-position-38" style="font-size: 1em;">ssh</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/streaming/" class="tag-cloud-link tag-link-32 tag-link-position-39" style="font-size: 1em;">streaming</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/symlink/" class="tag-cloud-link tag-link-21 tag-link-position-40" style="font-size: 1em;">symlink</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/typesetting/" class="tag-cloud-link tag-link-35 tag-link-position-41" style="font-size: 1em;">typesetting</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/unix/" class="tag-cloud-link tag-link-70 tag-link-position-42" style="font-size: 1em;">unix</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/virtualbox/" class="tag-cloud-link tag-link-22 tag-link-position-43" style="font-size: 1em;">virtualbox</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/websites/" class="tag-cloud-link tag-link-55 tag-link-position-44" style="font-size: 1em;">websites</a></li>
+	<li><a href="https://blog.michael.franzl.name/tag/wordpress/" class="tag-cloud-link tag-link-104 tag-link-position-45" style="font-size: 1em;">wordpress</a></li>
+</ul>
+</div>
+</nav></section><section id="archives-2" class="widget widget_archive"><h2 class="widget-title">Archives</h2><nav aria-label="Archives">
+			<ul>
+					<li><a href='https://blog.michael.franzl.name/2022/01/'>January 2022</a></li>
+	<li><a href='https://blog.michael.franzl.name/2021/12/'>December 2021</a></li>
+	<li><a href='https://blog.michael.franzl.name/2021/11/'>November 2021</a></li>
+	<li><a href='https://blog.michael.franzl.name/2021/07/'>July 2021</a></li>
+	<li><a href='https://blog.michael.franzl.name/2021/03/'>March 2021</a></li>
+	<li><a href='https://blog.michael.franzl.name/2021/02/'>February 2021</a></li>
+	<li><a href='https://blog.michael.franzl.name/2020/04/'>April 2020</a></li>
+	<li><a href='https://blog.michael.franzl.name/2019/08/'>August 2019</a></li>
+	<li><a href='https://blog.michael.franzl.name/2019/07/'>July 2019</a></li>
+	<li><a href='https://blog.michael.franzl.name/2018/09/'>September 2018</a></li>
+	<li><a href='https://blog.michael.franzl.name/2018/04/'>April 2018</a></li>
+	<li><a href='https://blog.michael.franzl.name/2018/03/'>March 2018</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/10/'>October 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/09/'>September 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/07/'>July 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/06/'>June 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/05/'>May 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/04/'>April 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/03/'>March 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/02/'>February 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2017/01/'>January 2017</a></li>
+	<li><a href='https://blog.michael.franzl.name/2016/11/'>November 2016</a></li>
+	<li><a href='https://blog.michael.franzl.name/2016/10/'>October 2016</a></li>
+	<li><a href='https://blog.michael.franzl.name/2016/09/'>September 2016</a></li>
+	<li><a href='https://blog.michael.franzl.name/2016/07/'>July 2016</a></li>
+	<li><a href='https://blog.michael.franzl.name/2016/05/'>May 2016</a></li>
+	<li><a href='https://blog.michael.franzl.name/2016/04/'>April 2016</a></li>
+	<li><a href='https://blog.michael.franzl.name/2016/01/'>January 2016</a></li>
+	<li><a href='https://blog.michael.franzl.name/2015/11/'>November 2015</a></li>
+	<li><a href='https://blog.michael.franzl.name/2015/05/'>May 2015</a></li>
+	<li><a href='https://blog.michael.franzl.name/2015/02/'>February 2015</a></li>
+	<li><a href='https://blog.michael.franzl.name/2014/12/'>December 2014</a></li>
+	<li><a href='https://blog.michael.franzl.name/2014/09/'>September 2014</a></li>
+	<li><a href='https://blog.michael.franzl.name/2014/06/'>June 2014</a></li>
+	<li><a href='https://blog.michael.franzl.name/2014/02/'>February 2014</a></li>
+	<li><a href='https://blog.michael.franzl.name/2014/01/'>January 2014</a></li>
+	<li><a href='https://blog.michael.franzl.name/2013/11/'>November 2013</a></li>
+	<li><a href='https://blog.michael.franzl.name/2013/10/'>October 2013</a></li>
+	<li><a href='https://blog.michael.franzl.name/2013/09/'>September 2013</a></li>
+	<li><a href='https://blog.michael.franzl.name/2013/08/'>August 2013</a></li>
+	<li><a href='https://blog.michael.franzl.name/2012/07/'>July 2012</a></li>
+			</ul>
+
+			</nav></section>	</aside><!-- .sidebar .widget-area -->
+
+		</div><!-- .site-content -->
+
+		<footer id="colophon" class="site-footer" role="contentinfo">
+			
+			
+			<div class="site-info">
+								<span class="site-title"><a href="https://blog.michael.franzl.name/" rel="home">Michael Franzl</a></span>
+								<a href="https://wordpress.org/" class="imprint">
+					Proudly powered by WordPress				</a>
+			</div><!-- .site-info -->
+		</footer><!-- .site-footer -->
+	</div><!-- .site-inner -->
+</div><!-- .site -->
+
+
+<!-- BEGIN recaptcha, injected by plugin wp-recaptcha-integration  -->
+<script type="text/javascript">
+				function get_form_submits(el){
+					var form,current=el,ui,type,slice = Array.prototype.slice,self=this;
+					this.submits=[];
+					this.form=false;
+
+					this.setEnabled=function(e){
+						for ( var s=0;s<self.submits.length;s++ ) {
+							if (e) self.submits[s].removeAttribute('disabled');
+							else  self.submits[s].setAttribute('disabled','disabled');
+						}
+						return this;
+					};
+					while ( current && current.nodeName != 'BODY' && current.nodeName != 'FORM' ) {
+						current = current.parentNode;
+					}
+					if ( !current || current.nodeName != 'FORM' )
+						return false;
+					this.form=current;
+					ui=slice.call(this.form.getElementsByTagName('input')).concat(slice.call(this.form.getElementsByTagName('button')));
+					for (var i = 0; i < ui.length; i++) if ( (type=ui[i].getAttribute('TYPE')) && type=='submit' ) this.submits.push(ui[i]);
+					return this;
+				}
+				</script><script type="text/javascript">
+		var recaptcha_widgets={};
+		function wp_recaptchaLoadCallback(){
+			try {
+				grecaptcha;
+			} catch(err){
+				return;
+			}
+			var e = document.querySelectorAll ? document.querySelectorAll('.g-recaptcha:not(.wpcf7-form-control)') : document.getElementsByClassName('g-recaptcha'),
+				form_submits;
+
+			for (var i=0;i<e.length;i++) {
+				(function(el){
+					var form_submits = get_form_submits(el).setEnabled(false), wid;
+					// check if captcha element is unrendered
+					if ( ! el.childNodes.length) {
+						wid = grecaptcha.render(el,{
+							'sitekey':'6LcfXyETAAAAAK19_BBkrieM2y9B2p-2oUz2e483',
+							'theme':el.getAttribute('data-theme') || 'light'
+							,
+							'callback' : function(r){ get_form_submits(el).setEnabled(true); /* enable submit buttons */ }
+						});
+						el.setAttribute('data-widget-id',wid);
+					} else {
+						wid = el.getAttribute('data-widget-id');
+						grecaptcha.reset(wid);
+					}
+				})(e[i]);
+			}
+		}
+
+		// if jquery present re-render jquery/ajax loaded captcha elements
+		if ( typeof jQuery !== 'undefined' )
+			jQuery(document).ajaxComplete( function(evt,xhr,set){
+				if( xhr.responseText && xhr.responseText.indexOf('6LcfXyETAAAAAK19_BBkrieM2y9B2p-2oUz2e483') !== -1)
+					wp_recaptchaLoadCallback();
+			} );
+
+		</script><script src="https://www.google.com/recaptcha/api.js?onload=wp_recaptchaLoadCallback&#038;render=explicit" async defer></script>
+<!-- END recaptcha -->
+<script id='mkaz-code-syntax-prism-js-js-extra'>
+var prism_settings = {"pluginUrl":"https:\/\/blog.michael.franzl.name\/wp-content\/plugins\/code-syntax-block\/"};
+</script>
+<script src='https://blog.michael.franzl.name/wp-content/plugins/code-syntax-block/assets/prism/prism.js?ver=1641643936' id='mkaz-code-syntax-prism-js-js'></script>
+<script src='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/js/skip-link-focus-fix.js?ver=20170530' id='twentysixteen-skip-link-focus-fix-js'></script>
+<script src='https://blog.michael.franzl.name/wp-includes/js/comment-reply.min.js?ver=5.9.5' id='comment-reply-js'></script>
+<script id='twentysixteen-script-js-extra'>
+var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+</script>
+<script src='https://blog.michael.franzl.name/wp-content/themes/twentysixteen/js/functions.js?ver=20181217' id='twentysixteen-script-js'></script>
+</body>
+</html>
