@@ -126,6 +126,8 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtPrintSupport import QPrinter
 from PyQt5.QtWebEngineWidgets import QWebEnginePage
 
+from support_phantompy import vsetup_logging
+
 global LOG
 import logging
 import warnings

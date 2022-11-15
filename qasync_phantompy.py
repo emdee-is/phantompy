@@ -12,7 +12,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import (QProgressBar, QWidget, QVBoxLayout)
 
 from phantompy import Render
-from lookupdns import LookFor as Render
+# from lookupdns import LookFor as Render
 
 global LOG
 import logging
@@ -85,27 +85,12 @@ def iMain(largs, bgui=True):
     url = largs[0]
     outfile = largs[1]
     jsfile = largs[2] if len(largs) > 2 else None
-    if os.path.exists(url):
-        with open(url, 'rt') as ofd:
-            elts = ofd.readlines()
-            random.shuffle(elts)
-            lelts = elts[:4]
-    else:
-        lelts = [url]
-    for i, elt in enumerate(lelts):
-        # run only starts the url loading
-        r = Render(app, do_print=False, do_save=True)
-        uri = elt.strip()
-        r.run(uri, outfile, jsfile)
-        per = int(float(i)*100.0/2/len(lelts))
-        LOG.debug(f"{r.percent} {app.lstart} {per} {i}")
-        if len(lelts) == 1: break
-        for j in range(1, random.randint(30, 120)):
-            # google throttles too many links at a time
-            if widget:
-                widget.update(str(per))
-            app.processEvents()
-            time.sleep(1)
+    # run only starts the url loading
+    r = Render(app, do_print=False, do_save=True)
+    uri = url.strip()
+    r.run(uri, outfile, jsfile)
+    LOG.debug(f"{r.percent} {app.lstart}")
+    
     LOG.info(f"queued {len(app.lstart)} urls")
         
     # run until app.exec() is finished (Qt window is closed)
