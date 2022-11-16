@@ -55,16 +55,15 @@ async def main(widget, app, ilen):
         async with ContextManager() as ctx:
             for i in range(1, 120):
                 seconds = await ctx.tick()
-                LOG.info(str(seconds))
-                perc = 50 + int(float(len(app.lfps))*100.0/ilen)
                 if widget:
-                    widget.update(str(perc))
-                LOG.debug(f"{app.lfps} {perc} {seconds}")
-                if len(app.lfps) == ilen:
-                    print('\n'.join(app.lfps))
+                    widget.update(str(i))
+                if len(app.ldone) == ilen:
+                    LOG.info(f"Finished with {app.ldone}")
+                    print('\n'.join(app.ldone))
                     app.exit()
                     # raise  asyncio.CancelledError
-                    break
+                    return
+                LOG.debug(f"{app.ldone} {perc} {seconds}")
     except asyncio.CancelledError as ex:
         LOG.debug("Task cancelled")
 
@@ -93,8 +92,7 @@ def iMain(largs, bgui=True):
     
     LOG.info(f"queued {len(app.lstart)} urls")
         
-    # run until app.exec() is finished (Qt window is closed)
-    task = loop.create_task(main(widget, app, len(lelts)))
+    task = loop.create_task(main(widget, app, 1))
     loop.run_forever()
 
     # cancel remaining tasks and wait for them to complete
