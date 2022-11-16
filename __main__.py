@@ -13,4 +13,5 @@ try:
     vsetup_logging(log_level, logfile='', stream=sys.stderr)
 except: pass
 
-iMain(sys.argv[1:], bgui=False)
+if __name__ == '__main__':
+    iMain(sys.argv[1:], bgui=False)

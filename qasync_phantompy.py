@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (QProgressBar, QWidget, QVBoxLayout)
 
 from phantompy import Render
 # from lookupdns import LookFor as Render
+from support_phantompy import vsetup_logging, omain_argparser
 
 global LOG
 import logging
@@ -35,7 +36,7 @@ class Widget(QtWidgets.QWidget):
         i = len(asyncio.all_tasks())
         self._label.setText(str(i))
         self.progress.setValue(int(text))
-        
+
 class ContextManager:
     def __init__(self) -> None:
         self._seconds = 0
@@ -63,25 +64,22 @@ async def main(widget, app, ilen):
                     app.exit()
                     # raise  asyncio.CancelledError
                     return
-                LOG.debug(f"{app.ldone} {perc} {seconds}")
+                LOG.debug(f"{app.ldone} {seconds}")
     except asyncio.CancelledError as ex:
         LOG.debug("Task cancelled")
 
 def iMain(largs):
-    parser = oMainArgparser()
-    oargs = parser.parse_args(lArgs)
+    parser = omain_argparser()
+    oargs = parser.parse_args(largs)
     bgui=oargs.show_gui
 
     try:
-        from support_phantompy import vsetup_logging
         d = int(os.environ.get('DEBUG', 0))
         if d > 0:
-            vsetup_logging(10, stream=sys.stderr)
-        else:
-            vsetup_logging(oargs.log_level, stream=sys.stderr)
-        vsetup_logging(log_level, logfile='', stream=sys.stderr)
+            oargs.log_level = 10
+        vsetup_logging(oargs.log_level, logfile='', stream=sys.stderr)
     except: pass
-    
+
     app = QtWidgets.QApplication([])
     app.lstart = []
     if bgui:
@@ -90,7 +88,7 @@ def iMain(largs):
         widget.show()
     else:
         widget = None
-        
+
     loop = qasync.QEventLoop(app)
     asyncio.set_event_loop(loop)
 
@@ -105,9 +103,9 @@ def iMain(largs):
     uri = url.strip()
     r.run(uri, pdffile, htmlfile, jsfile)
     LOG.debug(f"{r.percent} {app.lstart}")
-    
+
     LOG.info(f"queued {len(app.lstart)} urls")
-        
+
     task = loop.create_task(main(widget, app, 1))
     loop.run_forever()
 
@@ -117,6 +115,6 @@ def iMain(largs):
     loop.run_until_complete(asyncio.gather(*tasks))
 
 if __name__ == '__main__':
-    
+
     iMain(sys.argv[1:])
-    
+

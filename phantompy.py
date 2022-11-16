@@ -13,8 +13,8 @@ replacement for other bulky headless browser frameworks.
 
 If you have a display attached:
 
- ./phantom.py [--pdf_output <pdf-file>] [--js_input <javascript-file>] <url-or-html-file> 
-    
+ ./phantom.py [--pdf_output <pdf-file>] [--js_input <javascript-file>] <url-or-html-file>
+
 If you don't have a display attached (i.e. on a remote server), you can use
 xvfb-run, or don't add --show_gui - it should work without a display.
 
@@ -64,7 +64,7 @@ CSS @media types, etc.
 Installation of dependencies in Debian Stretch is easy:
 
     apt-get install xvfb python3-pyqt5 python3-pyqt5.qtwebkit
-    
+
 Finding the equivalent for other OSes is an exercise that I leave to you.
 
 
@@ -80,16 +80,16 @@ Given the following file /tmp/test.html
         document.getElementById('id1').innerHTML = "bar";
       </script>
     </html>
-    
+
 ... and the following file /tmp/test.js:
 
     document.getElementById('id2').innerHTML = "baz";
     console.log("__PHANTOM_PY_DONE__");
-    
+
 ... and running this script (without attached display) ...
 
     xvfb-run python3 phantom.py /tmp/test.html /tmp/out.pdf /tmp/test.js
-    
+
 ... you will get a PDF file /tmp/out.pdf with the contents "foo bar baz".
 
 Note that the second occurrence of "foo" has been replaced by the web page's own
@@ -130,8 +130,6 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5.QtPrintSupport import QPrinter
 from PyQt5.QtWebEngineWidgets import QWebEnginePage
 
-from support_phantompy import vsetup_logging
-
 global LOG
 import logging
 import warnings
@@ -161,19 +159,19 @@ def prepare(sdir='/tmp'):
     </html>
 """)
     LOG.debug(f"wrote {sfile}  ")
-    
+
 class Render(QWebEnginePage):
   def __init__(self, app, do_print=False, do_save=True):
-    app.ldone = []
-    self._app = app
-    self.do_print = do_print
-    self.do_save = do_save
-    self.percent = 0
-    self.uri = None
-    self.jsfile = None
-    self.htmlfile = None
-    self.pdffile = None
-    QWebEnginePage.__init__(self)
+      app.ldone = []
+      self._app = app
+      self.do_print = do_print
+      self.do_save = do_save
+      self.percent = 0
+      self.uri = None
+      self.jsfile = None
+      self.htmlfile = None
+      self.pdffile = None
+      QWebEnginePage.__init__(self)
 
   def run(self, url, pdffile, htmlfile, jsfile):
     self._app.lstart.append(id(self))
@@ -184,64 +182,65 @@ class Render(QWebEnginePage):
     self.pdffile = pdffile
     self.outfile = pdffile or htmlfile
     LOG.debug(f"phantom.py: URL={url} OUTFILE={outfile} JSFILE={jsfile}")
-    qurl = QUrl.fromUserInput(url)    
-    
+    qurl = QUrl.fromUserInput(url)
+
     # The PDF generation only happens when the special string __PHANTOM_PY_DONE__
     # is sent to console.log(). The following JS string will be executed by
     # default, when no external JavaScript file is specified.
     self.js_contents = "setTimeout(function() { console.log('__PHANTOM_PY_DONE__') }, 5000);";
-    
+
     if jsfile:
       try:
         with open(self.jsfile, 'rt') as f:
             self.js_contents = f.read()
       except Exception as e:
         LOG.exception(f"error reading jsfile {self.jsfile}")
-        
+
     self.loadFinished.connect(self._loadFinished)
     self.percent = 20
     self.load(qurl)
     self.javaScriptConsoleMessage = self._onConsoleMessage
     LOG.debug(f"phantom.py: loading 10")
-    
+
   def _onConsoleMessage(self, *args):
-    if len(args) > 3:
-        level, txt, lineno, filename = args
-    else:
-        level = 1
-        txt, lineno, filename = args
-    LOG.debug(f"CONSOLE {lineno} {txt} {filename}")
-    if "__PHANTOM_PY_DONE__" in txt:
-      self.percent = 40
-      # If we get this magic string, it means that the external JS is done
-      if self.do_save:
-          self.toHtml(self._html_callback)
-          return
-      # drop through
-      txt = "__PHANTOM_PY_SAVED__"
-    if "__PHANTOM_PY_SAVED__" in txt:
-      self.percent = 50
-      if self.do_print:
-          self._print()
-          return
-      txt = "__PHANTOM_PY_PRINTED__"
-    if "__PHANTOM_PY_PRINTED__" in txt:
-      self.percent = 60
-      self._exit(level)
-    
+      if len(args) > 3:
+          level, txt, lineno, filename = args
+      else:
+          level = 1
+          txt, lineno, filename = args
+      LOG.debug(f"CONSOLE {lineno} {txt} {filename}")
+      if "__PHANTOM_PY_DONE__" in txt:
+          self.percent = 40
+          # If we get this magic string, it means that the external JS is done
+          if self.do_save:
+              self.toHtml(self._html_callback)
+              return
+          # drop through
+          txt = "__PHANTOM_PY_SAVED__"
+      if "__PHANTOM_PY_SAVED__" in txt:
+          self.percent = 50
+          if self.do_print:
+              self._print()
+              return
+          txt = "__PHANTOM_PY_PRINTED__"
+      if "__PHANTOM_PY_PRINTED__" in txt:
+          self.percent = 60
+          self._exit(level)
+
   def _loadFinished(self, result):
-    self.percent = 30
-    LOG.info(f"phantom.py: _loadFinished {result} {self.percent}")
-    LOG.debug(f"phantom.py: Evaluating JS from {self.jsfile}")
-    self.runJavaScript("document.documentElement.contentEditable=true")
-    self.runJavaScript(self.js_contents)
+      # RenderProcessTerminationStatus ?
+      self.percent = 30
+      LOG.info(f"phantom.py: _loadFinished {result} {self.percent}")
+      LOG.debug(f"phantom.py: Evaluating JS from {self.jsfile}")
+      self.runJavaScript("document.documentElement.contentEditable=true")
+      self.runJavaScript(self.js_contents)
 
   def _html_callback(self, *args):
     """print(self, QPrinter, Callable[[bool], None])"""
     if type(args[0]) is str:
         self._save(args[0])
         self._onConsoleMessage(0, "__PHANTOM_PY_SAVED__", 0 , '')
-        
+
   def _save(self, html):
     sfile = self.htmlfile
     # CompleteHtmlSaveFormat SingleHtmlSaveFormat MimeHtmlSaveFormat
@@ -267,7 +266,7 @@ class Render(QWebEnginePage):
     printer.setOutputFileName(sfile)
     self.print(printer, self._printer_callback)
     LOG.debug("phantom.py: Printed")
-    
+
   def _exit(self, val):
       self.percent = 100
       LOG.debug(f"phantom.py: Exiting with val {val}")

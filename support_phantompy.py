@@ -80,7 +80,7 @@ def vsetup_logging(log_level, logfile='', stream=sys.stdout):
             'NOTSET': logging.NOTSET,
         }
 
-def omain__argparser(_=None):
+def omain_argparser(_=None):
 
     try:
         from OpenSSL import SSL
@@ -106,9 +106,9 @@ def omain__argparser(_=None):
                         help="Operate on the HTML file with javascript")
     parser.add_argument('--html_output', type=str, default='',
                         help="Write loaded and javascripted result to a HTML file")
-    parser.add_argument('--pdf_output', type=str, default=''),
+    parser.add_argument('--pdf_output', type=str, default='',
                         help="Write loaded and javascripted result to a PDF file")
-    parser.add_argument('--show_gui', type=bool, store_action=True),
+    parser.add_argument('--show_gui', type=bool, default=False, store_action=True),
                         help="show a progress meter that doesn't work")
     parser.add_argument('html_url', type=str, nargs='?',
                         required=True,

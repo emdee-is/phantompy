@@ -1,9 +1,14 @@
 #!/usr/local/bin/python3.sh
 # -*-mode: python; indent-tabs-mode: nil; py-indent-offset: 4; coding: utf-8 -*
 
-# Looks for urls https://dns.google/resolve?
-# and parses them to extract a magic field.
-# https://dns.google/resolve?name=domain.name&type=TXT&cd=true&do=true
+"""
+Looks for urls https://dns.google/resolve?
+https://dns.google/resolve?name=domain.name&type=TXT&cd=true&do=true
+and parses them to extract a magic field.
+
+A good example of how you can parse json embedded in HTML with phantomjs.
+
+"""
 
 import sys
 import os
@@ -17,7 +22,7 @@ warnings.filterwarnings('ignore')
 LOG = logging.getLogger()
 
 class LookFor(Render):
-    
+
   def __init__(self, app, do_print=True, do_save=False):
     app.lfps = []
     self._app = app
@@ -37,7 +42,7 @@ class LookFor(Render):
     fp = fp[:i]
     # threadsafe?
     self._app.lfps.append(fp)
-    
+
   def _html_callback(self, *args):
     """print(self, QPrinter, Callable[[bool], None])"""
     if type(args[0]) is str:
@@ -72,8 +77,8 @@ class LookFor(Render):
       self.we_run_this_tor_relay = False
       LOG.warn(f"BAD {self.uri}")
       return 2
-  
+
   def _loadFinished(self, result):
       LOG.debug(f"phantom.py: Loading finished {self.uri}")
       self.toHtml(self._html_callback)
-    
+
