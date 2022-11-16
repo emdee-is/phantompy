@@ -3,15 +3,15 @@
 
 import sys
 import os
-import qasync
 import asyncio
 import time
 import random
 
-from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import (QProgressBar, QWidget, QVBoxLayout)
+# let qasync figure out what Qt we are using - we dont care
+from qasync import QApplication, QtWidgets, QEventLoop
 
 from phantompy import Render
+# if you want an example of looking for things in downloaded HTML:
 # from lookupdns import LookFor as Render
 from support_phantompy import vsetup_logging, omain_argparser
 
@@ -28,7 +28,7 @@ class Widget(QtWidgets.QWidget):
         box = QtWidgets.QHBoxLayout()
         self.setLayout(box)
         box.addWidget(self._label)
-        self.progress = QProgressBar()
+        self.progress = QtWidgets.QProgressBar()
         self.progress.setRange(0, 99)
         box.addWidget(self.progress)
 
@@ -80,7 +80,7 @@ def iMain(largs):
         vsetup_logging(oargs.log_level, logfile='', stream=sys.stderr)
     except: pass
 
-    app = QtWidgets.QApplication([])
+    app = QApplication([])
     app.lstart = []
     if bgui:
         widget = Widget()
@@ -89,7 +89,7 @@ def iMain(largs):
     else:
         widget = None
 
-    loop = qasync.QEventLoop(app)
+    loop = QEventLoop(app)
     asyncio.set_event_loop(loop)
 
     url = oargs.html_url
