@@ -13,17 +13,18 @@ replacement for other bulky headless browser frameworks.
 
 If you have a display attached:
 
-    ./phantom.py <url> <pdf-file> [<javascript-file>]
+ ./phantom.py [--pdf_output <pdf-file>] [--js_input <javascript-file>] <url-or-html-file> 
     
-If you don't have a display attached (i.e. on a remote server):
-
-    xvfb-run ./phantom.py <url> <pdf-file> [<javascript-file>]
+If you don't have a display attached (i.e. on a remote server), you can use
+xvfb-run, or don't add --show_gui - it should work without a display.
 
 Arguments:
 
+[--pdf_output <pdf-file>] (optional) Path and name of PDF file to generate
+[--html_output <html-file>] (optional) Path and name of HTML file to generate
+[--js_input <javascript-file>] (optional) Path and name of a JavaScript file to execute
+--log_level 10=debug 20=info 30=warn 40=error
 <url> Can be a http(s) URL or a path to a local file
-<pdf-file> Path and name of PDF file to generate
-[<javascript-file>] (optional) Path and name of a JavaScript file to execute
 
 
 ## Features
@@ -55,6 +56,9 @@ CSS @media types, etc.
 
 * Python3
 * PyQt5
+* [qasnyc](https://github.com/CabbageDevelopment/qasync) for the
+  standalone program ```qasnyc_phantompy.py```
+
 * xvfb (optional for display-less machines)
 
 Installation of dependencies in Debian Stretch is easy:
@@ -167,15 +171,18 @@ class Render(QWebEnginePage):
     self.percent = 0
     self.uri = None
     self.jsfile = None
-    self.outfile = None
+    self.htmlfile = None
+    self.pdffile = None
     QWebEnginePage.__init__(self)
 
-  def run(self, url, outfile, jsfile):
+  def run(self, url, pdffile, htmlfile, jsfile):
     self._app.lstart.append(id(self))
     self.percent = 10
     self.uri = url
     self.jsfile = jsfile
-    self.outfile = outfile
+    self.htmlfile = htmlfile
+    self.pdffile = pdffile
+    self.outfile = pdffile or htmlfile
     LOG.debug(f"phantom.py: URL={url} OUTFILE={outfile} JSFILE={jsfile}")
     qurl = QUrl.fromUserInput(url)    
     
@@ -236,7 +243,7 @@ class Render(QWebEnginePage):
         self._onConsoleMessage(0, "__PHANTOM_PY_SAVED__", 0 , '')
         
   def _save(self, html):
-    sfile = self.outfile.replace('.pdf','.html')
+    sfile = self.htmlfile
     # CompleteHtmlSaveFormat SingleHtmlSaveFormat MimeHtmlSaveFormat
     with open(sfile, 'wt') as ofd:
         ofd.write(html)
@@ -244,7 +251,6 @@ class Render(QWebEnginePage):
 
   def _printer_callback(self, *args):
     """print(self, QPrinter, Callable[[bool], None])"""
-    # print(f"_printer_callback {self.outfile} {args}")
     if args[0] is False:
         i = 1
     else:
@@ -252,7 +258,7 @@ class Render(QWebEnginePage):
     self._onConsoleMessage(i, "__PHANTOM_PY_PRINTED__", 0 , '')
 
   def _print(self):
-    sfile = self.outfile.replace('.html', '.pdf')
+    sfile = self.pdffile
     printer = QPrinter()
     printer.setPageMargins(10, 10, 10, 10, QPrinter.Millimeter)
     printer.setPaperSize(QPrinter.A4)
@@ -267,26 +273,4 @@ class Render(QWebEnginePage):
       LOG.debug(f"phantom.py: Exiting with val {val}")
       # threadsafe?
       self._app.ldone.append(self.uri)
-
-def omain(app, largs):
-    if (len(largs) < 2):
-        LOG.info("USAGE: ./phantom.py <url> <pdf-file> [<javascript-file>]")
-        return -1
-    
-    url = largs[0]
-    outfile = largs[1]
-    jsfile = largs[2] if len(largs) > 2 else None
-    ilen = 1
-
-    r = Render(app, do_print=False, do_save=True)
-    r.run(url, outfile, jsfile)
-    for i in range(1, 120):
-        app.processEvents()
-        print(f"{app.ldone} {i}")
-        if len(app.ldone) == ilen:
-            print(f"{app.ldone} found {ilen}")
-            app.exit()
-            return r
-        time.sleep(1)
-    return r
 

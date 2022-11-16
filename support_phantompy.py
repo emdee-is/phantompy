@@ -3,6 +3,7 @@
 
 import sys
 import os
+import argparse
 
 try:
     if 'COLOREDLOGS_LEVEL_STYLES' not in os.environ:
@@ -79,3 +80,37 @@ def vsetup_logging(log_level, logfile='', stream=sys.stdout):
             'NOTSET': logging.NOTSET,
         }
 
+def omain__argparser(_=None):
+
+    try:
+        from OpenSSL import SSL
+        lCAfs = SSL._CERTIFICATE_FILE_LOCATIONS
+    except:
+        lCAfs = []
+
+    CAfs = []
+    for elt in lCAfs:
+        if os.path.exists(elt):
+            CAfs.append(elt)
+    if not CAfs:
+        CAfs = ['']
+
+    parser = argparse.ArgumentParser(add_help=True,
+                                     epilog=__doc__)
+    parser.add_argument('--https_cafile', type=str,
+                        help="Certificate Authority file (in PEM) (unused)",
+                        default=CAfs[0])
+    parser.add_argument('--log_level', type=int, default=20,
+                        help="10=debug 20=info 30=warn 40=error")
+    parser.add_argument('--js_input', type=str, default='',
+                        help="Operate on the HTML file with javascript")
+    parser.add_argument('--html_output', type=str, default='',
+                        help="Write loaded and javascripted result to a HTML file")
+    parser.add_argument('--pdf_output', type=str, default=''),
+                        help="Write loaded and javascripted result to a PDF file")
+    parser.add_argument('--show_gui', type=bool, store_action=True),
+                        help="show a progress meter that doesn't work")
+    parser.add_argument('html_url', type=str, nargs='?',
+                        required=True,
+                        help='html file or url')
+    return parser

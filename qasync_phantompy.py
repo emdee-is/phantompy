@@ -67,7 +67,21 @@ async def main(widget, app, ilen):
     except asyncio.CancelledError as ex:
         LOG.debug("Task cancelled")
 
-def iMain(largs, bgui=True):
+def iMain(largs):
+    parser = oMainArgparser()
+    oargs = parser.parse_args(lArgs)
+    bgui=oargs.show_gui
+
+    try:
+        from support_phantompy import vsetup_logging
+        d = int(os.environ.get('DEBUG', 0))
+        if d > 0:
+            vsetup_logging(10, stream=sys.stderr)
+        else:
+            vsetup_logging(oargs.log_level, stream=sys.stderr)
+        vsetup_logging(log_level, logfile='', stream=sys.stderr)
+    except: pass
+    
     app = QtWidgets.QApplication([])
     app.lstart = []
     if bgui:
@@ -80,14 +94,16 @@ def iMain(largs, bgui=True):
     loop = qasync.QEventLoop(app)
     asyncio.set_event_loop(loop)
 
-    largs = sys.argv[1:]
-    url = largs[0]
-    outfile = largs[1]
-    jsfile = largs[2] if len(largs) > 2 else None
+    url = oargs.html_url
+    htmlfile = oargs.html_output
+    pdffile = oargs.html_output
+    jsfile = oargs.js_input
     # run only starts the url loading
-    r = Render(app, do_print=False, do_save=True)
+    r = Render(app,
+               do_print=True if pdffile else False,
+               do_save=True if htmlfile else False)
     uri = url.strip()
-    r.run(uri, outfile, jsfile)
+    r.run(uri, pdffile, htmlfile, jsfile)
     LOG.debug(f"{r.percent} {app.lstart}")
     
     LOG.info(f"queued {len(app.lstart)} urls")
@@ -101,15 +117,6 @@ def iMain(largs, bgui=True):
     loop.run_until_complete(asyncio.gather(*tasks))
 
 if __name__ == '__main__':
-    try:
-        from exclude_badExits import vsetup_logging
-        d = int(os.environ.get('DEBUG', 0))
-        if d > 0:
-            vsetup_logging(10, stream=sys.stderr)
-        else:
-            vsetup_logging(20, stream=sys.stderr)
-        vsetup_logging(log_level, logfile='', stream=sys.stderr)
-    except: pass
     
-    iMain(sys.argv[1:], bgui=False)
+    iMain(sys.argv[1:])
     

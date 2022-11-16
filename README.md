@@ -41,7 +41,7 @@ Qt picks up proxies from the environment, so this will respect
 * Python3
 * PyQt5 (this should work with PySide2 and PyQt6 - let us know.)
 * [qasnyc](https://github.com/CabbageDevelopment/qasync) for the
-  standalone program ```qasync_lookup.py```
+  standalone program ```qasync_phantompy.py```
 
 ## Standalone
 
