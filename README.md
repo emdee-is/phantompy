@@ -62,10 +62,10 @@ for the PyQt ```app.exec``` and the exiting of the program.
 We've decided to use the best of the shims that merge the Python
 ```asyncio``` and Qt event loops:
 [qasyc](https://github.com/CabbageDevelopment/qasync). This is seen as
-the successor to the sorta abandoned[quamash](https://github.com/harvimt/quamash).
+the successor to the sorta abandoned [quamash](https://github.com/harvimt/quamash).
 The code is based on a
 [comment](https://github.com/CabbageDevelopment/qasync/issues/35#issuecomment-1315060043)
-by [Alex Marcha](https://github.com/hosaka) who's excellent code helped me.
+by [Alex March](https://github.com/hosaka) who's excellent code helped me.
 As this is my first use of ```asyncio``` and ```qasync``` I may have
 introduced some errors and it may be improved on, but it works, and
 it not a monolithic Qt program, so it can be used as a library.

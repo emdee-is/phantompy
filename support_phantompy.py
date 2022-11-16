@@ -108,7 +108,7 @@ def omain_argparser(_=None):
                         help="Write loaded and javascripted result to a HTML file")
     parser.add_argument('--pdf_output', type=str, default='',
                         help="Write loaded and javascripted result to a PDF file")
-    parser.add_argument('--show_gui', type=bool, default=False, store_action=True),
+    parser.add_argument('--show_gui', type=bool, default=False, store_action=True,
                         help="show a progress meter that doesn't work")
     parser.add_argument('html_url', type=str, nargs='?',
                         required=True,
