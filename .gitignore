@@ -1,0 +1,16 @@
+*.pyc
+*.pyo
+.idea
+*~
+*.iml
+*.so
+*.log
+build
+*.spec
+dist
+/*.egg-info
+/*.egg
+html
+.cache
+*.db
+*.junk
