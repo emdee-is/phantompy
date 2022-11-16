@@ -26,10 +26,15 @@ way of knowing when that script has finished doing its work. For this
 reason, the external script should execute at the end
 ```console.log("__PHANTOM_PY_DONE__");``` when done. This will trigger
 the PDF generation or the file saving, after which phantompy will exit.
+If you do not want to run any javascipt file, this trigger is provided
+in the code by default.
 
 It is important to remember that since you're just running WebKit, you can
 use everything that WebKit supports, including the usual JS client
 libraries, CSS, CSS @media types, etc.
+
+Qt picks up proxies from the environment, so this will respect
+```https_proxy``` or ```http_proxy``` if set.
 
 ## Dependencies
 
@@ -73,9 +78,11 @@ The standalone program is ```quash_phantompy.py```
 ### Arguments
 
 ```
-<url> Can be a http(s) URL or a path to a local file
-<pdf-file> Path and name of PDF file to generate
-[<javascript-file>] (optional) Path and name of a JavaScript file to execute
+--js_input (optional) Path and name of a JavaScript file to execute on the HTML
+--html_output <html-file> (optional)  Path a HTML output file to generate after JS is applied
+--pdf_output <pdf-file> (optional)  Path and name of PDF file to generate after JS is applied
+--log_level 10=debug 20=info 30=warn 40=error
+html_or_url - required argument, a http(s) URL or a path to a local file.
 ```
 Setting ```DEBUG=1``` in the environment will give debugging messages
 on ```stderr```.
