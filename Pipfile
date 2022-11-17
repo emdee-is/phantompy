@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.org/simple"
+name = "pypi"
+verify_ssl = true
+
+[dev-packages]
+atomicwrites = "*"
+pytest = "*"
+pytest-forked = "*"
+pytest-raises = "*"
+
+[packages]
+
+[dev-packages.phantomjs]
+editable = true
+path = "."
