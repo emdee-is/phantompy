@@ -1,25 +1,29 @@
 #!/usr/local/bin/python3.sh
 # -*-mode: python; indent-tabs-mode: nil; py-indent-offset: 4; coding: utf-8 -*
 
-import sys
-import os
 import asyncio
-import time
-import random
+import os
+import sys
 
 # let qasync figure out what Qt we are using - we dont care
-from qasync import QApplication, QtWidgets, QEventLoop
+from qasync import QApplication, QEventLoop, QtWidgets
 
 from phantompy import Render
 # if you want an example of looking for things in downloaded HTML:
 # from lookupdns import LookFor as Render
-from support_phantompy import vsetup_logging, omain_argparser
+from support_phantompy import omain_argparser, vsetup_logging
 
 global LOG
 import logging
 import warnings
+
 warnings.filterwarnings('ignore')
 LOG = logging.getLogger()
+
+try:
+    import shtab
+except:
+    shtab = None
 
 class Widget(QtWidgets.QWidget):
     def __init__(self):
@@ -38,13 +42,17 @@ class Widget(QtWidgets.QWidget):
         self.progress.setValue(int(text))
 
 class ContextManager:
+
     def __init__(self) -> None:
         self._seconds = 0
+
     async def __aenter__(self):
         LOG.debug("ContextManager enter")
         return self
+
     async def __aexit__(self, *args):
         LOG.debug("ContextManager exit")
+
     async def tick(self):
         await asyncio.sleep(1)
         self._seconds += 1
@@ -65,13 +73,15 @@ async def main(widget, app, ilen):
                     # raise  asyncio.CancelledError
                     return
                 LOG.debug(f"{app.ldone} {seconds}")
-    except asyncio.CancelledError as ex:
+    except asyncio.CancelledError as ex: # noqa
         LOG.debug("Task cancelled")
 
 def iMain(largs):
     parser = omain_argparser()
+    if shtab:
+        shtab.add_argument_to(parser, ["-s", "--print-completion"]) # magic!
     oargs = parser.parse_args(largs)
-    bgui=oargs.show_gui
+    bgui = oargs.show_gui
 
     try:
         d = int(os.environ.get('DEBUG', 0))
@@ -115,6 +125,4 @@ def iMain(largs):
     loop.run_until_complete(asyncio.gather(*tasks))
 
 if __name__ == '__main__':
-
     iMain(sys.argv[1:])
-

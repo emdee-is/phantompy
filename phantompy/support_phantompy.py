@@ -1,21 +1,22 @@
 #!/usr/local/bin/python3.sh
 # -*-mode: python; indent-tabs-mode: nil; py-indent-offset: 4; coding: utf-8 -*
 
-import sys
-import os
 import argparse
+import os
+import sys
 
 try:
     if 'COLOREDLOGS_LEVEL_STYLES' not in os.environ:
         os.environ['COLOREDLOGS_LEVEL_STYLES'] = 'spam=22;debug=28;verbose=34;notice=220;warning=202;success=118,bold;error=124;critical=background=red'
     # https://pypi.org/project/coloredlogs/
     import coloredlogs
-except ImportError as e:
+except ImportError:
     coloredlogs = False
 
 global LOG
 import logging
 import warnings
+
 warnings.filterwarnings('ignore')
 LOG = logging.getLogger()
 
@@ -24,7 +25,7 @@ def vsetup_logging(log_level, logfile='', stream=sys.stdout):
     add = True
 
     # stem fucks up logging
-    from stem.util import log
+    # from stem.util import log
     logging.getLogger('stem').setLevel(30)
 
     logging._defaultFormatter = logging.Formatter(datefmt='%m-%d %H:%M:%S')

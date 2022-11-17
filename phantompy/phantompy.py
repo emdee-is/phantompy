@@ -118,21 +118,20 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
-import sys
+import importlib
 import os
-import traceback
-import atexit
-import time
+import sys  # noqa
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtCore import QTimer
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtPrintSupport import QPrinter
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
+from qasync import QtModuleName
+from qasync.QtCore import QUrl
+
+QPrinter = importlib.import_module(QtModuleName + ".QtPrintSupport.QPrinter", package=QtModuleName)
+QWebEnginePage = importlib.import_module(QtModuleName + ".QtWebEngineWidgets.QWebEnginePage", package=QtModuleName)
 
 global LOG
 import logging
 import warnings
+
 warnings.filterwarnings('ignore')
 LOG = logging.getLogger()
 
@@ -181,19 +180,19 @@ class Render(QWebEnginePage):
     self.htmlfile = htmlfile
     self.pdffile = pdffile
     self.outfile = pdffile or htmlfile
-    LOG.debug(f"phantom.py: URL={url} OUTFILE={outfile} JSFILE={jsfile}")
+    LOG.debug(f"phantom.py: URL={url} htmlfile={htmlfile} pdffile={pdffile} JSFILE={jsfile}")
     qurl = QUrl.fromUserInput(url)
 
     # The PDF generation only happens when the special string __PHANTOM_PY_DONE__
     # is sent to console.log(). The following JS string will be executed by
     # default, when no external JavaScript file is specified.
-    self.js_contents = "setTimeout(function() { console.log('__PHANTOM_PY_DONE__') }, 5000);";
+    self.js_contents = "setTimeout(function() { console.log('__PHANTOM_PY_DONE__') }, 5000);"
 
     if jsfile:
       try:
         with open(self.jsfile, 'rt') as f:
             self.js_contents = f.read()
-      except Exception as e:
+      except Exception as e: # noqa
         LOG.exception(f"error reading jsfile {self.jsfile}")
 
     self.loadFinished.connect(self._loadFinished)
@@ -239,7 +238,7 @@ class Render(QWebEnginePage):
     """print(self, QPrinter, Callable[[bool], None])"""
     if type(args[0]) is str:
         self._save(args[0])
-        self._onConsoleMessage(0, "__PHANTOM_PY_SAVED__", 0 , '')
+        self._onConsoleMessage(0, "__PHANTOM_PY_SAVED__", 0, '')
 
   def _save(self, html):
     sfile = self.htmlfile
@@ -254,7 +253,7 @@ class Render(QWebEnginePage):
         i = 1
     else:
         i = 0
-    self._onConsoleMessage(i, "__PHANTOM_PY_PRINTED__", 0 , '')
+    self._onConsoleMessage(i, "__PHANTOM_PY_PRINTED__", 0, '')
 
   def _print(self):
     sfile = self.pdffile
@@ -262,7 +261,7 @@ class Render(QWebEnginePage):
     printer.setPageMargins(10, 10, 10, 10, QPrinter.Millimeter)
     printer.setPaperSize(QPrinter.A4)
     printer.setCreator("phantom.py by Michael Karl Franzl")
-    printer.setOutputFormat(QPrinter.PdfFormat);
+    printer.setOutputFormat(QPrinter.PdfFormat)
     printer.setOutputFileName(sfile)
     self.print(printer, self._printer_callback)
     LOG.debug("phantom.py: Printed")
@@ -272,4 +271,3 @@ class Render(QWebEnginePage):
       LOG.debug(f"phantom.py: Exiting with val {val}")
       # threadsafe?
       self._app.ldone.append(self.uri)
-
