@@ -27,7 +27,8 @@ if __name__ == '__main__':
         python_requires="~=3.6",
         # probably works on PyQt6 and PySide2 but untested
         # https://github.com/CabbageDevelopment/qasync/
-        install_requires=['qasync', 'PyQt5'],
+        install_requires=['qasync',
+                          'PyQt5'],
         entry_points={
             'console_scripts': ['phantompy = phantompy.__main__:iMain', ]},
         classifiers=[

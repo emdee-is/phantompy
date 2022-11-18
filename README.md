@@ -4,8 +4,9 @@ A simple replacement for phantomjs using PyQt.
 
 This code is based on a brilliant idea of
 [Michael Franzl](https://gist.github.com/michaelfranzl/91f0cc13c56120391b949f885643e974/raw/a0601515e7a575bc4c7d4d2a20973b29b6c6f2df/phantom.py)
-that he wrote up in his
-[blog](https://blog.michael.franzl.name/2017/10/16/phantom-py/index.html)
+that he wrote up in his blog:
+* https://blog.michael.franzl.name/2017/10/16/phantomjs-alternative-write-short-pyqt-scripts-instead-phantom-py/
+* https://blog.michael.franzl.name/2017/10/16/phantom-py/
 
 ## Features
 
